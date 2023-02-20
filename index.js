@@ -5,7 +5,6 @@ const cors = require("cors")
 const router = express.Router()
 const cookieParser = require("cookie-parser")
 const expressSession = require("express-session")
-// npm i multer -S
 const multer = require("multer")
 const fs = require("fs")
 
@@ -28,7 +27,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname + "/public"))
 app.use("/uploads", express.static(__dirname + "/uploads"))
 
-// post 전송 방식을 사용하기 때문에 bodyParser가 먼저 선언 되어야 한다.
 let storage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, "uploads")
@@ -37,7 +35,7 @@ let storage = multer.diskStorage({
         callback(null, Date.now() + "_" + file.originalname)
     },
 })
-// 파일 제한 : 10, 1G이하로 제한.
+
 let upload = multer({
     storage: storage,
     limit: {
@@ -47,6 +45,22 @@ let upload = multer({
 })
 
 /////// router -------
+let count = 0
+router.route("/count").get((req, res) => {
+    count++
+    let date = new Date()
+    let responseData = {
+        cnt: count,
+        dateStr: `${date.getFullYear()}-${
+            date.getMonth() + 1
+        }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${String(
+            date.getSeconds()
+        ).padStart(2, "0")}`,
+        date: date,
+    }
+    res.end(JSON.stringify(responseData))
+})
+
 router.route("/process/photo").post(upload.array("photo", 1), (req, res) => {
     console.log("POST - /process/photo 호출 ...")
     console.log(req.files)

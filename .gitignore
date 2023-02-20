@@ -108,6 +108,7 @@ dist
 server_temp.js
 /public/images
 /uploads
+index_photo*
 
 
 .prettierrc*
