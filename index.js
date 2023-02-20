@@ -8,9 +8,13 @@ const expressSession = require("express-session")
 const multer = require("multer")
 const fs = require("fs")
 
+const server = http.createServer(app)
+const { Server } = require("socket.io")
+const io = new Server(server)
+
 app.set("views", __dirname + "/views")
 app.set("view engine", "ejs")
-process.env.PORT = 3000
+process.env.PORT = 3003
 app.set("port", process.env.PORT || 3001)
 
 app.use(cookieParser())
@@ -106,6 +110,15 @@ router.route("/home").get((req, res) => {
     res.end()
 })
 
+io.sockets.on("connection", (socket) => {
+    console.log("socket connected!")
+    //console.dir(socket);
+    socket.emit("news", "hello world!")
+    socket.on("Hello", (data) => {
+        console.log("client : ", data)
+    })
+})
+
 app.use("/", router)
 
 /////// error handler -----
@@ -118,7 +131,8 @@ var errorHandler = expressErrorHandler({
 app.use(expressErrorHandler.httpError(404))
 app.use(errorHandler)
 
-const server = http.createServer(app)
 server.listen(app.get("port"), () => {
     console.log("Node.js 서버 실행 중 ... http://localhost:" + app.get("port"))
 })
+
+////////// socket.io Event Handler
