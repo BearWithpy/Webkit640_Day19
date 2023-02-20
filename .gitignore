@@ -105,7 +105,8 @@ dist
 # TernJS port file
 .tern-port
 
-server_temp.js
+server_*
+index_*
 /public/images
 /uploads
 index_photo*

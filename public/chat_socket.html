@@ -5,25 +5,83 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
+
+        <script src="http://code.jquery.com/jquery.js"></script>
     </head>
     <body>
+        <button id="connectBtn">Connect</button>
+        <button id="disconnectBtn">Disconnect</button>
+        <hr />
+        ID <input type="text" id="userId" value="test01" /><br />
+        이름 <input type="text" id="userName" value="JS" /><br />
+
+        <button id="loginBtn">Login</button>
+        <hr />
+        메시지 <input type="text" id="userMsg" value="test message 01" /><br />
+        <button id="sendBtn">Send</button>
+        <br />
+        <div
+            id="Box"
+            style="
+                width: 300px;
+                height: 300px;
+                border: 1px solid red;
+                overflow: scroll;
+            "
+        ></div>
+
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            var socket = io()
-            socket.on("news", function (data) {
-                console.log(data)
+            var socket = null
+            function connectSocket() {
+                socket = io.connect("http://localhost:3003")
 
-                socket.emit("Hello", "Hello Server!")
+                socket.on("connect", () => {
+                    console.log("socket server 연결됨")
+                })
+            }
+
+            $("#connectBtn").click(function (e) {
+                connectSocket()
             })
-
-            socket.on("this", function (data) {
-                console.log(data.will)
+            $("#disconnectBtn").click(function (e) {
+                if (socket) {
+                    socket.close()
+                }
             })
+            $("#loginBtn").click(function (e) {
+                if (!socket) {
+                    alert("소켓 연결이 필요합니다")
+                    $("#connectBtn").focus()
+                } else {
+                    socket.emit("login", {
+                        userId: $("#userId").val(),
+                        userName: $("#userName").val(),
+                    })
 
-            // 객체로 emit
-            // socket.emit("private message", { from: "ME", msg: "Thanks a lot" })
-
-            socket.emit("private message", "ME", "Thanks a lot")
+                    socket.on("msg", function (data) {
+                        var msgLine = $('<div class="msgLine">')
+                        var msgBox = $('<div class="msgBox">')
+                        msgBox.append(data)
+                        msgBox.css("display", "inline-block")
+                        msgLine.append(msgBox)
+                        $("#Box").append(msgLine)
+                        // auto scorll down when a user send something
+                        Box.scrollTop = Box.scrollHeight
+                    })
+                }
+            })
+            $("#sendBtn").click(function (e) {
+                if (!socket) {
+                    alert("소켓 연결이 필요합니다")
+                    $("#connectBtn").focus()
+                } else {
+                    socket.emit("msg", {
+                        userName: $("#userName").val(),
+                        userMsg: $("#userMsg").val(),
+                    })
+                }
+            })
         </script>
     </body>
 </html>
