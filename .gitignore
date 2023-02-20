@@ -114,3 +114,7 @@ index_photo*
 
 .prettierrc*
 .prettierignore
+
+
+babel.config.json
+nodemon.json
