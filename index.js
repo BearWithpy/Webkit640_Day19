@@ -111,11 +111,25 @@ router.route("/home").get((req, res) => {
 })
 
 io.sockets.on("connection", (socket) => {
-    console.log("socket connected!")
-    //console.dir(socket);
+    // console.log("socket connected!")
+    // console.dir(socket);
+
     socket.emit("news", "hello world!")
     socket.on("Hello", (data) => {
         console.log("client : ", data)
+    })
+
+    // 접속된 모든 소켓에 전달
+    io.sockets.emit("this", { will: "be received by everyone" })
+
+    // private msg - 소켓 매개변수 이용
+    // 객체를 받을 때
+    // socket.on("private message", (obj) => {
+    //     console.log(`from:${obj.from} \nmsg:${obj.msg}`)
+    // })
+
+    socket.on("private message", (from, msg) => {
+        console.log(`from: ${from} \nmsg: ${msg}`)
     })
 })
 

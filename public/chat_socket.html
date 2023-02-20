@@ -15,6 +15,15 @@
 
                 socket.emit("Hello", "Hello Server!")
             })
+
+            socket.on("this", function (data) {
+                console.log(data.will)
+            })
+
+            // 객체로 emit
+            // socket.emit("private message", { from: "ME", msg: "Thanks a lot" })
+
+            socket.emit("private message", "ME", "Thanks a lot")
         </script>
     </body>
 </html>
