@@ -23,6 +23,7 @@ app.set("port", process.env.PORT || 3001)
 // app.use(express.urlencoded({ extended: true }))
 
 router.route("/").get((req, res) => res.render("home"))
+router.route("/*").get((req, res) => res.redirect("/"))
 
 app.use("/", router)
 
@@ -33,7 +34,25 @@ io.on("connection", (socket) => {
 
     socket.on("room", (roomName, showRoom) => {
         socket.join(roomName)
-        showRoom()
+        showRoom(roomName)
+
+        socket.to(roomName).emit("greeting", socket["nickname"])
+
+        socket.on("message", (msg, sendMessage) => {
+            msg = `${socket["nickname"]}: ${msg}`
+            socket.to(roomName).emit("sendMessage", msg, sendMessage(msg))
+        })
+    })
+
+    socket.on("nickname", (nickname, saveNickname) => {
+        socket["nickname"] = nickname
+        saveNickname(nickname)
+    })
+
+    socket.on("disconnecting", () => {
+        socket.rooms.forEach((room) => {
+            socket.to(room).emit("goodbye")
+        })
     })
 })
 
