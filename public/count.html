@@ -12,23 +12,27 @@
     <body>
         <div id="result"></div>
         <script>
-            var form = document.forms[0]
-            console.log(form)
-            window.onload = function () {
-                event.preventDefault()
-
-                var url = "http://localhost:3000/count"
-                var xhr = new XMLHttpRequest()
-
-                xhr.onreadystatechange = function () {
-                    document.getElementById("result").innerHTML =
-                        "<h3>Count=> " + this.responseText + "</h3>"
-                    console.log(this.responseText)
-                    console.log(JSON.parse(this.responseText))
+            let result = document.getElementById("result")
+            let cnt = 0
+            async function getCount(srcUrl) {
+                try {
+                    const response = await axios.get(srcUrl)
+                    if (response.data !== "") {
+                        result.innerText = JSON.stringify(response.data)
+                        cnt = response.data.count
+                    }
+                } catch (error) {
+                    console.error(error)
                 }
+            }
 
-                xhr.open("GET", url, true)
-                xhr.send()
+            window.onload = function () {
+                var url = "http://localhost:3000/count"
+                getCount(url)
+
+                setInterval(() => {
+                    getCount("http://localhost:3000/count/" + cnt)
+                }, 500)
             }
         </script>
     </body>

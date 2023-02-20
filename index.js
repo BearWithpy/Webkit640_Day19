@@ -45,11 +45,33 @@ let upload = multer({
 })
 
 /////// router -------
+var messages = []
+app.get("/recieve", function (req, resp) {
+    if (req.query.size >= messages.length) {
+        resp.end()
+    } else {
+        var res = {
+            total: messages.length,
+            messages: messages.slice(req.query.size),
+        }
+        resp.end(JSON.stringify(res))
+    }
+})
+app.get("/send", function (req, res) {
+    messages.push({
+        sender: req.query.sender,
+        message: req.query.message,
+    })
+    res.end()
+})
+
 let count = 0
+let responseData = {}
+
 router.route("/count").get((req, res) => {
     count++
     let date = new Date()
-    let responseData = {
+    responseData = {
         cnt: count,
         dateStr: `${date.getFullYear()}-${
             date.getMonth() + 1
@@ -59,6 +81,16 @@ router.route("/count").get((req, res) => {
         date: date,
     }
     res.end(JSON.stringify(responseData))
+})
+
+router.route("/count/:cnt").get((req, res) => {
+    // 전역변수 count와 파라미터로 전달된 값이 다르면 responseData 반환
+    let { cnt } = req.params
+    if (count !== Number(cnt)) {
+        res.end(JSON.stringify(responseData))
+    } else {
+        res.end()
+    }
 })
 
 router.route("/process/photo").post(upload.array("photo", 1), (req, res) => {
