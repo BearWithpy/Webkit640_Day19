@@ -110,6 +110,9 @@ router.route("/home").get((req, res) => {
     res.end()
 })
 
+// 접속된 모든 소켓에 전달
+io.sockets.emit("this", { will: "be received by everyone" })
+
 io.sockets.on("connection", (socket) => {
     // console.log("socket connected!")
     // console.dir(socket);
@@ -119,10 +122,8 @@ io.sockets.on("connection", (socket) => {
         console.log("client : ", data)
     })
 
-    // 접속된 모든 소켓에 전달
-    io.sockets.emit("this", { will: "be received by everyone" })
-
     // private msg - 소켓 매개변수 이용
+
     // 객체를 받을 때
     // socket.on("private message", (obj) => {
     //     console.log(`from:${obj.from} \nmsg:${obj.msg}`)
@@ -130,6 +131,16 @@ io.sockets.on("connection", (socket) => {
 
     socket.on("private message", (from, msg) => {
         console.log(`from: ${from} \nmsg: ${msg}`)
+    })
+
+    socket.on("disconnect", function () {
+        console.log(
+            "\nSOCKETIO disconnect EVENT: ",
+            socket.id,
+            "\n<< client disconnect >>\n"
+        )
+
+        // 여기서부터 필요한 내용을 작성하면 된다.
     })
 })
 
