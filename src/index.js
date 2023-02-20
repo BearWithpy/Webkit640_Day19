@@ -4,10 +4,9 @@ const app = express()
 const router = express.Router()
 
 const server = http.createServer(app)
-const WebSocket = require("ws")
-const { PassThrough } = require("stream")
-// const { Server } = require("socket.io")
-// const io = new Server(server)
+
+const { Server } = require("socket.io")
+const io = new Server(server)
 
 app.set("view engine", "pug")
 app.set("views", __dirname + "/views")
@@ -27,38 +26,16 @@ router.route("/").get((req, res) => res.render("home"))
 
 app.use("/", router)
 
-const webSocketServer = new WebSocket.Server({ server })
-
-const sockets = []
-const handleConnection = (socket) => {
-    sockets.push(socket)
-    socket.on("open", () => {
-        console.log("Connected")
+io.on("connection", (socket) => {
+    socket.onAny((e) => {
+        console.log("socket event: ", e)
     })
-    socket.on("message", (msg) => {
-        msg = JSON.parse(msg)
 
-        switch (msg.type) {
-            case "newMessage":
-                sockets.forEach((each) =>
-                    each.send(`${socket.nickName}: ${msg.payload.toString()}`)
-                )
-                break
-            case "nickName":
-                socket["nickName"] = msg.payload
-                break
-
-            default:
-                break
-        }
+    socket.on("room", (roomName, showRoom) => {
+        socket.join(roomName)
+        showRoom()
     })
-    socket.on("close", () => {
-        console.log("Disconnected")
-    })
-    // socket.send("Hello This is server!!")
-}
-
-webSocketServer.on("connection", handleConnection)
+})
 
 server.listen(app.get("port"), () => {
     console.log("Node.js 서버 실행 중 ... http://localhost:" + app.get("port"))

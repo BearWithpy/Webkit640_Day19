@@ -1,48 +1,27 @@
-const socket = new WebSocket(`ws://${window.location.host}`)
+const socket = io()
 
-const msgList = document.querySelector("ul")
-const nameForm = document.querySelector("#nickname")
-const msgForm = document.querySelector("#message")
+const room = document.querySelector("#room")
+const chat = document.querySelector("#chat")
+let roomName = room.querySelector("form")
+const chatting = chat.querySelector("form")
 
-const JSONMessage = (type, payload) => {
-    const message = { type, payload }
-    return JSON.stringify(message)
+chat.hidden = true
+
+const showRoom = (userRoomName) => {
+    room.hidden = true
+    chat.hidden = false
+
+    const roomNameHeader = chat.querySelector("h2")
+    roomNameHeader.innerText = `Room - ${roomName}`
 }
 
-socket.addEventListener("open", () => {
-    console.log("Connected to server")
-})
-
-socket.addEventListener("close", () => {
-    console.log("Disconnected to server")
-})
-
-socket.addEventListener("message", (msg) => {
-    const li = document.createElement("li")
-    li.innerText = msg.data
-    msgList.append(li)
-})
-
-// setTimeout(() => {
-//     socket.send("Hello I am browser")
-// }, 10000)
-const handleSubmit = (e) => {
+const handleRoomName = (e) => {
     e.preventDefault()
 
-    const input = msgForm.querySelector("input")
-    socket.send(JSONMessage("newMessage", input.value))
-    input.value = ""
+    const input = roomName.querySelector("input")
+    roomName = input.value
+
+    socket.emit("room", { payload: input.value }, showRoom)
 }
 
-const handleNicknameSubmit = (e) => {
-    e.preventDefault()
-
-    const nickname = nameForm.querySelector("input")
-    socket["nickname"] = nickname.value
-
-    socket.send(JSONMessage("nickName", socket["nickname"]))
-    nickname.value = ""
-}
-
-msgForm.addEventListener("submit", handleSubmit)
-nameForm.addEventListener("submit", handleNicknameSubmit)
+roomName.addEventListener("submit", handleRoomName)

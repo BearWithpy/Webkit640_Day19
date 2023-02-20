@@ -14,11 +14,20 @@ html(lang="en")
         header 
             h1 Chat Service 
         main 
-        form#nickname
-            input(type="text", placeholder="Plz write your name!", required)
-            button Save
-        ul 
-        form#message
-            input(type="text", placeholder="Plz write Msg!", required)
-            button Send
-    script(src="/public/js/app.js") 
+            div#room
+                form
+                    input(type="text", placeholder="Plz write room name!", required)
+                    button Enter
+            div#chat
+                h2 Room name
+
+                //- form#nickname
+                //-     input(type="text", placeholder="Plz write your name!", required)
+                //-     button Save
+                ul 
+                form#message
+                    input(type="text", placeholder="Plz write Msg!", required)
+                    button Send
+                    
+    script(src="/socket.io/socket.io.js") 
+    script(src="/public/js/app.js")
