@@ -5,6 +5,7 @@ const router = express.Router()
 
 const server = http.createServer(app)
 const WebSocket = require("ws")
+const { PassThrough } = require("stream")
 // const { Server } = require("socket.io")
 // const io = new Server(server)
 
@@ -35,8 +36,21 @@ const handleConnection = (socket) => {
         console.log("Connected")
     })
     socket.on("message", (msg) => {
-        sockets.forEach((each) => each.send(msg.toString()))
-        // console.log(msg.toString("utf8"))
+        msg = JSON.parse(msg)
+
+        switch (msg.type) {
+            case "newMessage":
+                sockets.forEach((each) =>
+                    each.send(`${socket.nickName}: ${msg.payload.toString()}`)
+                )
+                break
+            case "nickName":
+                socket["nickName"] = msg.payload
+                break
+
+            default:
+                break
+        }
     })
     socket.on("close", () => {
         console.log("Disconnected")
