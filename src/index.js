@@ -44,8 +44,15 @@ io.on("connection", (socket) => {
         socket.to(roomName).emit("greeting", socket["nickname"])
 
         socket.on("message", (msg, sendMessage) => {
-            msg = `${socket["nickname"]}: ${msg}`
-            socket.to(roomName).emit("sendMessage", msg, sendMessage(msg))
+            msg = `${msg}`
+            socket
+                .to(roomName)
+                .emit(
+                    "sendMessage",
+                    msg,
+                    socket["nickname"],
+                    sendMessage(msg, socket["nickname"])
+                )
         })
     })
 

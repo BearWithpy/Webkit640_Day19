@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            .balloon_so {
+                position: relative;
+                margin: 50px;
+                width: 400px;
+                height: 100px;
+                background: #333333;
+                border-radius: 10px;
+            }
+            .balloon_so:after {
+                border-top: 15px solid #333333;
+                border-left: 15px solid transparent;
+                border-right: 0px solid transparent;
+                border-bottom: 0px solid transparent;
+                content: "";
+                position: absolute;
+                top: 10px;
+                left: -15px;
+            }
+
+            .balloon_me {
+                position: relative;
+                margin: 50px;
+                width: 400px;
+                height: 100px;
+                background: #118bee;
+                border-radius: 10px;
+            }
+            .balloon_me:after {
+                border-top: 15px solid #118bee;
+                border-right: 15px solid transparent;
+                border-left: 0px solid transparent;
+                border-bottom: 0px solid transparent;
+                content: "";
+                position: absolute;
+                top: 10px;
+                right: -15px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="balloon_so"></div>
+        <div class="balloon_me"></div>
+    </body>
+</html>

@@ -32,42 +32,69 @@ const saveNickname = () => {
     room.hidden = false
 }
 
-const sendMessage = (msg) => {
-    const ul = chat.querySelector("ul")
-    const li = document.createElement("li")
+const sendMessage = (msg, nickname) => {
+    const someone = document.createElement("div")
+    someone.innerText = nickname
+    someone.style.fontSize = "13px"
+    someone.style.color = "black"
 
-    li.innerText = msg
-    li.style.listStyle = "none"
-    ul.appendChild(li)
-    box.appendChild(ul)
+    const msgBox = document.createElement("div")
+    const msgLine = document.createElement("div")
+
+    msgBox.className = "msgBox"
+    msgLine.className = "msgLine"
+
+    msgBox.innerText = msg
+    msgBox.style.display = "inline-block"
+
+    msgLine.style.color = "white"
+
+    msgLine.append(someone)
+    msgLine.append(msgBox)
+
+    box.append(msgLine)
     box.scrollTop = box.scrollHeight
 }
 
 const sendNotice = (msg) => {
-    const ul = chat.querySelector("ul")
-    const li = document.createElement("li")
     const div = document.createElement("div")
 
     div.innerText = msg
     div.style.backgroundColor = "#118bee"
-    div.style.color = "#ffffff"
-    li.style.listStyle = "none"
-    li.style.textAlign = "center"
-    li.appendChild(div)
-    ul.appendChild(li)
-    box.appendChild(ul)
+    div.style.color = "#f1f1f1"
+    div.style.marginTop = "5px"
+    div.style.marginBottom = "5px"
+
+    div.style.textAlign = "center"
+
+    box.append(div)
     box.scrollTop = box.scrollHeight
 }
 
 const sendMyMessage = (msg) => {
-    const ul = chat.querySelector("ul")
-    const li = document.createElement("li")
+    const me = document.createElement("div")
+    me.innerText = "me"
+    me.style.fontSize = "13px"
+    me.style.color = "black"
 
-    li.innerText = msg
-    li.style.listStyle = "none"
-    li.style.textAlign = "right"
-    ul.appendChild(li)
-    box.appendChild(ul)
+    const msgBox = document.createElement("div")
+    const msgLine = document.createElement("div")
+
+    msgBox.className = "msgBox"
+    msgLine.className = "msgLine"
+
+    msgBox.innerText = msg
+    msgBox.style.display = "inline-block"
+    msgBox.style.border = "0"
+    msgBox.style.backgroundColor = "#118bee"
+    msgLine.style.textAlign = "right"
+    msgLine.style.color = "white"
+
+    msgLine.append(me)
+    msgLine.append(msgBox)
+
+    box.append(msgLine)
+    box.scrollTop = box.scrollHeight
 }
 
 const handleNickName = (e) => {
@@ -75,9 +102,6 @@ const handleNickName = (e) => {
 
     socket.emit("nickname", nick, saveNickname)
 }
-
-// roomName.addEventListener("submit", handleRoomName)
-// nicknameForm.addEventListener("submit", handleNickName)
 
 const handleSendMessage = (e) => {
     e.preventDefault()
@@ -94,7 +118,6 @@ const handleSendMyMessage = (e) => {
     const msg = chatting.querySelector("input")
     socket.emit("message", msg.value, sendMyMessage)
     msg.value = ""
-    console.log(box.scrollHeight)
     box.scrollTop = box.scrollHeight
 }
 
@@ -107,7 +130,6 @@ const showRoom = (_roomName) => {
     roomNameHeader.innerText = `Room - ${_roomName}`
 
     chatting.querySelector("input").focus()
-    // chatting.addEventListener("submit", handleSendMessage)
 
     chatting.addEventListener("submit", handleSendMyMessage)
 }
@@ -123,13 +145,13 @@ newForm.addEventListener("submit", handleNewForm)
 
 socket.on("greeting", (nickname) => {
     sendNotice("Someone has joined")
-    box.scrollTop = box.scrollHeight
+
     // sendMessage(`${nickname} has joined`)
 })
 
 socket.on("goodbye", (nickname) => {
     sendNotice("Someone has left")
-    box.scrollTop = box.scrollHeight
+
     // sendMessage(`${nickname} has left`)
 })
 

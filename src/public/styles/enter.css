@@ -4,7 +4,7 @@
     border: none;
 }
 body {
-    font-size: 14px;
+    font-size: 18px;
     font-family: "Roboto", sans-serif;
 }
 
@@ -62,4 +62,80 @@ body {
     background-image: url("checkbox-active.png");
     background-repeat: no-repeat;
     background-size: contain;
+}
+
+#exitBtn {
+    float: right;
+    background-color: red;
+}
+
+.balloon_so {
+    position: relative;
+    right: -2%;
+    width: fit-content;
+    background: #333333;
+    border-radius: 10px;
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+}
+/* .balloon_so:after {
+    border-top: 15px solid #333333;
+    border-left: 15px solid transparent;
+    border-right: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: -15px;
+} */
+
+.balloon_me {
+    background: #118bee;
+}
+/* .balloon_me:after {
+    border-top: 15px solid #118bee;
+    border-right: 15px solid transparent;
+    border-left: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: -15px;
+} */
+
+///////////////////////////////////////
+* {
+    box-sizing: border-box;
+}
+.msgLine {
+    margin: 15px;
+}
+.msgBox {
+    border: 1px solid black;
+    background: #1f1f1f;
+    padding: 0.3em 0.3em;
+    border-radius: 8px;
+}
+#chatContent {
+    border: 1px solid #000;
+    width: 100%;
+    height: 200px;
+    margin-bottom: 10px;
+    overflow-y: auto;
+}
+#myChat {
+    width: 100%;
+}
+#msg,
+#myChat {
+    width: 80%;
+    height: 32px;
+    border-radius: 8px;
+}
+#send {
+    width: 16%;
+    height: 34px;
+    border-radius: 50px;
+    background: black;
+    color: white;
 }

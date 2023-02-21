@@ -28,6 +28,7 @@ html(lang="en")
     body
         header 
             h1 Chat Service 
+            
         main 
             //- div#nickname
             //-     form
@@ -49,14 +50,16 @@ html(lang="en")
                         span &nbsp;&nbsp;닉네임 저장하기 
                     input(type="submit", value="Enter")
 
-
+            
             div#chat
                 h2 Room name
+                
                 div#box
                     ul
                 form#message
                     input(type="text", placeholder="Plz write Msg!", required)
                     button Send
+                    button#exitBtn(onclick='window.close()') Exit
 
     script(src="/socket.io/socket.io.js") 
     script(src="/public/js/app.js")
