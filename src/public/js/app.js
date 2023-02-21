@@ -5,28 +5,12 @@ const room = document.querySelector("#room")
 const chat = document.querySelector("#chat")
 const nickName = document.querySelector("#nickname")
 const box = document.querySelector("#box")
-
 const title = document.querySelector(".login-wrapper > h1")
-
 const newForm = document.getElementById("login-form")
-
-// let roomName = room.querySelector("form")
 const chatting = chat.querySelector("form")
-// const nicknameForm = nickName.querySelector("form")
 
 header.hidden = true
 chat.hidden = true
-// room.hidden = true
-
-const handleRoomName = (e) => {
-    e.preventDefault()
-
-    const input = roomName.querySelector("input")
-    roomName = input.value
-
-    // socket.emit("room", { payload: input.value }, showRoom)
-    socket.emit("room", input.value, showRoom)
-}
 
 const saveNickname = () => {
     room.hidden = false
@@ -95,12 +79,6 @@ const sendMyMessage = (msg) => {
 
     box.append(msgLine)
     box.scrollTop = box.scrollHeight
-}
-
-const handleNickName = (e) => {
-    e.preventDefault()
-
-    socket.emit("nickname", nick, saveNickname)
 }
 
 const handleSendMessage = (e) => {
