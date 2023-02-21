@@ -8,27 +8,55 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+        link(rel="stylesheet", href="../public/styles/enter.css")
+
+        style.
+            ul {
+                padding: 0
+            }
+            div#box{
+                overflow-y:scroll ;
+                height:650px;
+            }
+            form#message {
+                padding-top: 10px;
+                margin-left: 10%;
+                margin-right: 10%;
+            }
         
         title Chat
     body
         header 
             h1 Chat Service 
         main 
-            div#nickname
-                form
-                    input(type="text", placeholder="Plz put your lovely name!", required, autofocus)
-                    button Save
+            //- div#nickname
+            //-     form
+            //-         input(type="text", placeholder="Plz put your lovely name!", required, autofocus)
+            //-         button Save
 
-            div#room
-                form
-                    input(type="text", placeholder="Plz write room name!", required)
-                    button Enter
+            //- div#room
+            //-     form
+            //-         input(type="text", placeholder="Plz write room name!", required)
+            //-         button Enter
+
+            div.login-wrapper
+                h1 Chat Chat!
+                form(id="login-form") 
+                    input(type="text",id="room",name="roomName", placeholder="Room Name")
+                    input(type="text",id="nickname",name="userNickname",placeholder="User Nickname")
+                    label(for="remember-check") 
+                        input(type="checkbox",id="remember-check" ) 
+                        span &nbsp;&nbsp;닉네임 저장하기 
+                    input(type="submit", value="Enter")
+
+
             div#chat
                 h2 Room name
-               
-                ul 
+                div#box
+                    ul
                 form#message
                     input(type="text", placeholder="Plz write Msg!", required)
                     button Send
+
     script(src="/socket.io/socket.io.js") 
     script(src="/public/js/app.js")

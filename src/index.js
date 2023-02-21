@@ -32,6 +32,11 @@ io.on("connection", (socket) => {
         console.log("socket event: ", e)
     })
 
+    socket.on("nickname", (nickname, saveNickname) => {
+        socket["nickname"] = nickname
+        saveNickname(nickname)
+    })
+
     socket.on("room", (roomName, showRoom) => {
         socket.join(roomName)
         showRoom(roomName)
@@ -42,11 +47,6 @@ io.on("connection", (socket) => {
             msg = `${socket["nickname"]}: ${msg}`
             socket.to(roomName).emit("sendMessage", msg, sendMessage(msg))
         })
-    })
-
-    socket.on("nickname", (nickname, saveNickname) => {
-        socket["nickname"] = nickname
-        saveNickname(nickname)
     })
 
     socket.on("disconnecting", () => {

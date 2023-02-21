@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+
+        <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
+        <link rel="stylesheet" href="./styles/enter.css" />
+    </head>
+    <body>
+        <div class="login-wrapper">
+            <h1>Chat Chat :)</h1>
+            <form method="post" action="서버의url" id="login-form">
+                <input type="text" name="roomName" placeholder="Room Name" />
+                <input
+                    type="text"
+                    name="userNickname"
+                    placeholder="User Nickname"
+                />
+                <label for="remember-check">
+                    <input type="checkbox" id="remember-check" />
+                    &nbsp;&nbsp;닉네임 저장하기
+                </label>
+                <input type="submit" value="Enter" />
+            </form>
+        </div>
+    </body>
+</html>
